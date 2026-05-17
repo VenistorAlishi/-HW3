@@ -1,0 +1,14 @@
+__pycache__/
+.ipynb_checkpoints/
+.python-version
+.venv/
+
+# Local outputs and caches
+*.npz
+*.npy
+artifacts/
+
+# Competition data (do not commit)
+train.csv
+test.csv
+sample_submission.csv
