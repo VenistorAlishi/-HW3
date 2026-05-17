@@ -19,10 +19,11 @@ This file tracks submission versions and leaderboard results.
 | v0.3 | 2026-05-17 | ca56674 | 0.05282 | P100, full pipeline | Dual branch (TF-IDF + transformer), text fusion ablation, blend tuning | Current best |
 | v0.4 | 2026-05-17 | c89aa80 | 0.05282 | P100, full pipeline | Multi-seed TF-IDF ensemble + optional transformer blend | No gain vs v0.3 |
 
-## Next Candidate (v0.5)
+## Next Candidate (v0.6)
 
 Planned upgrade:
-- run dual-model TF-IDF ensemble: `LogReg + SGD(log_loss)` with multi-seed averaging;
+- switch main CV and threshold tuning to time-based splits on `publication_date`;
+- keep dual-model TF-IDF ensemble: `LogReg + SGD(log_loss)` with multi-seed averaging;
 - tune TF-IDF internal model blend weight on OOF (`w * LR + (1-w) * SGD`);
 - keep transformer branch as optional additive blend over TF-IDF model-ensemble;
 - tune blend weight and per-label thresholds on full OOF with fixed reproducible setup;
