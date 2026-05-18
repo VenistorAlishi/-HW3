@@ -21,13 +21,13 @@ This file tracks submission versions and leaderboard results.
 | v0.6 | 2026-05-18 | 5931056 | 0.05219 | P100, full pipeline | Time-based CV and threshold tuning | New best |
 | v0.7 | 2026-05-18 | 15bcf1d | 0.05574 | P100, full pipeline | Disentangled sparse features + LR/SGD ensemble | Regressed, discard |
 | v0.8 | 2026-05-18 | 00d571a | 0.05621 | P100, full pipeline | Forward-time CV + LR-only stabilization | Regressed, investigate |
+| v0.8.1 | 2026-05-18 | 3a2427d | n/a | P100, full pipeline | OOF-mask fix + stable text rollback | Awaiting score |
 
-## Next Candidate (v0.8.1)
+## Next Candidate (v1.0)
 
 Planned upgrade:
-- fix OOF accounting for forward-time CV by scoring/tuning only on validated rows (`oof_mask`);
-- rollback to stable TF-IDF text recipe (`title+text`) and keep LR-only branch;
-- keep strict forward-time splits consistently in hyperparameter tuning and main CV;
-- keep transformer branch optional and disabled by default;
-- tune per-label thresholds on full OOF with fixed reproducible setup;
+- full neural stack: transformer fine-tuning for multilabel classification (`BCEWithLogits`);
+- forward-time CV with seed ensemble;
+- GO requirement via classical calibration layer (`LogReg`) on neural OOF probabilities;
+- tune per-label thresholds on calibrated OOF;
 - optimize for lower metric values (target: beat `0.03774`).
