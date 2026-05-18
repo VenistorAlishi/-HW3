@@ -19,13 +19,14 @@ This file tracks submission versions and leaderboard results.
 | v0.3 | 2026-05-17 | ca56674 | 0.05282 | P100, full pipeline | Dual branch (TF-IDF + transformer), text fusion ablation, blend tuning | Current best |
 | v0.4 | 2026-05-17 | c89aa80 | 0.05282 | P100, full pipeline | Multi-seed TF-IDF ensemble + optional transformer blend | No gain vs v0.3 |
 | v0.6 | 2026-05-18 | 5931056 | 0.05219 | P100, full pipeline | Time-based CV and threshold tuning | New best |
+| v0.7 | 2026-05-18 | 15bcf1d | 0.05574 | P100, full pipeline | Disentangled sparse features + LR/SGD ensemble | Regressed, discard |
 
-## Next Candidate (v0.7)
+## Next Candidate (v0.8)
 
 Planned upgrade:
-- switch TF-IDF branch to disentangled sparse channels (`title`, `text-word`, `text-char`, `source/month/year`);
-- keep time-based CV and dual-model ensemble (`LogReg + SGD(log_loss)`);
-- tune TF-IDF internal model blend weight on OOF (`w * LR + (1-w) * SGD`);
-- keep transformer branch optional and disabled by default for faster iterations;
+- fix CV leakage by using strict forward-chaining time splits (train only on past folds);
+- simplify to stable LR-only TF-IDF branch (disable SGD/model blend branch);
+- keep time-based hyperparameter tuning and threshold search with same split logic;
+- keep transformer branch optional and disabled by default;
 - tune per-label thresholds on full OOF with fixed reproducible setup;
 - optimize for lower metric values (target: beat `0.03774`).
