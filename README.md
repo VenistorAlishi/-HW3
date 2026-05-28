@@ -22,6 +22,11 @@ This repository contains a fully reproducible solution notebook for the 2026 NLP
 3. Run notebook:
    - `uv run jupyter lab`
 
+## Kaggle
+
+See [`KAGGLE.md`](KAGGLE.md) for accelerator settings (GPU T4 ×2), run modes, and submit checklist.
+
 ## Notes
 - Pretrained model weights are downloaded at runtime and are not stored in this repository.
 - No external datasets are used.
+- Public targets: Baseline 2 `0.04168`, goal `0.03560` (Hamming loss, lower is better).
