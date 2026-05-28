@@ -28,6 +28,10 @@ If `RUN_MODE=full` on Kaggle and GPU is unavailable, the notebook **raises** ins
 
 - `MODEL_PROFILE = "tiny"` — default, `cointegrated/rubert-tiny2`, faster.
 - `MODEL_PROFILE = "base"` — `DeepPavlov/rubert-base-cased`, 3 epochs, slower; use when chasing goal **0.03560**.
+- `ENABLE_NEURAL = False` — skip transformer training (~10 min saved); TF-IDF + GO only.
+- `TFIDF_LR_SGD_BLEND = True` — v1.2: LR + SGD blend per seed (recommended).
+
+**Best public so far:** `0.05179` (v1.1, GO_stack, T4).
 
 ## Targets (public Hamming loss, lower is better)
 

@@ -6,43 +6,40 @@ This file tracks submission versions and leaderboard results.
 
 - **Goal (public):** `0.03560` — primary target (Hamming loss, lower is better).
 - **Baseline 2 (public):** `0.04168` — intermediate milestone.
-- **Our best so far (public):** `0.05219` — gap to goal: `0.01659`; gap to Baseline 2: `0.01051`.
+- **Our best so far (public):** `0.05179` — gap to goal: `0.01619`; gap to Baseline 2: `0.01011`.
 
 ## Current Best (our submissions)
 
-- Public score: `0.05219`
-- Commit: `5931056`
-- Notebook: `solution.ipynb` (v0.6 classical)
-- Accelerator: `GPU P100`
-- Notes: TF-IDF + time-based CV and threshold tuning.
+- Public score: `0.05179`
+- Commit: `e11a2b7` (v1.1 hybrid on Kaggle T4)
+- Notebook: `solution.ipynb`
+- Accelerator: `GPU T4 ×2`
+- Notes: GO_stack on [TF-IDF, neural]; OOF tuned `0.050599`; neural OOF weak (`~0.073`), TF-IDF `~0.055`.
 
 ## Submission History
 
 | Version | Date | Commit | Public score | Setup | Key changes | Decision |
 |---|---|---|---:|---|---|---|
-| v0.1 | 2026-05-17 | f7f76c5 | 0.05290 | P100 | First production submit | — |
-| v0.2 | 2026-05-17 | 3ef3cae | 0.05384 | P100 | Metric-direction fix | Regressed |
-| v0.3 | 2026-05-17 | ca56674 | 0.05282 | P100 | TF-IDF + transformer ablation | — |
-| v0.4 | 2026-05-17 | c89aa80 | 0.05282 | P100 | Multi-seed TF-IDF | No gain |
-| v0.6 | 2026-05-18 | 5931056 | 0.05219 | P100 | Time-based CV + thresholds | **Current best** |
-| v0.7 | 2026-05-18 | 15bcf1d | 0.05574 | P100 | Disentangled sparse | Regressed |
-| v0.8 | 2026-05-18 | 00d571a | 0.05621 | P100 | Forward-time CV LR-only | Regressed |
-| v0.8.1 | 2026-05-18 | 3a2427d | n/a | P100 | OOF-mask fix | Superseded |
-| v1.0 | 2026-05-28 | 6020fb1 | pending | T4/P100 | Neural fine-tune + GO | Superseded |
-| v1.0.1 | 2026-05-28 | 77e2f83 | pending | T4 | CUDA `TRAINING_DEVICE` smoke test | Superseded |
-| v1.1 | 2026-05-28 | (pending) | pending | T4 | Hybrid TF-IDF + neural, GO stack, 3 seeds | **Submit next** |
-| v1.2 | config | — | — | T4 | `MODEL_PROFILE=base`, 3 epochs, final TF-IDF refit | Switch profile on Kaggle |
+| v0.6 | 2026-05-18 | 5931056 | 0.05219 | P100 | Time-based CV + thresholds | Superseded |
+| v1.0 / v1.0.1 | 2026-05-28 | 77e2f83 | — | T4 | Neural + CUDA fix | No LB / infra |
+| v1.1 | 2026-05-28 | e11a2b7 | **0.05179** | T4, full, tiny | Hybrid TF-IDF+neural, GO_stack, 3 seeds | **Current best** |
+| v1.2 | 2026-05-28 | (next) | pending | T4 | LR+SGD TF-IDF blend, optional `ENABLE_NEURAL=False` | Submit next |
 
-## v1.1 / v1.2 notebook features
+## v1.1 Kaggle diagnostics (public 0.05179)
 
-- `RUN_MODE`: `debug` | `full`
-- `MODEL_PROFILE`: `tiny` (`rubert-tiny2`) | `base` (`rubert-base-cased`)
-- `ENABLE_HYBRID`: TF-IDF (`title_text`) + neural (`title_text_source_date`)
-- Head selection: `alpha_blend` vs `GO_stack` on masked OOF
-- Kaggle: fail-fast if `full` on CPU — see [`KAGGLE.md`](KAGGLE.md)
+| Metric | Value |
+|--------|------:|
+| OOF GO_stack @0.5 | 0.051677 |
+| OOF tuned (masked) | 0.050599 |
+| Hybrid alpha (TF-IDF) | 0.80 |
+| Neural ensemble OOF @0.5 | 0.073069 |
+| TF-IDF ensemble OOF @0.5 | 0.055075 |
+| Selected head | GO_stack |
+| Thresholds | [0.46, 0.43, 0.60, 0.42, 0.22] |
 
 ## Next steps
 
-1. Kaggle **GPU T4 ×2**, `RUN_MODE=full`, `MODEL_PROFILE=tiny` → record public LB.
-2. If OOF masked ≤ ~0.042, submit; else try `MODEL_PROFILE=base`.
-3. Update this log after each public score.
+1. Run **v1.2** (`TFIDF_LR_SGD_BLEND=True`) on Kaggle T4 — expect lower TF-IDF OOF (~0.046 zone).
+2. Optional fast path: `ENABLE_NEURAL=False` (~10 min) if GO on TF-IDF alone is enough.
+3. If OOF tuned ≤ ~0.048, try `MODEL_PROFILE=base` for goal `0.03560`.
+4. Record each public score below.
